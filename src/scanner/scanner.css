@@ -1,0 +1,46 @@
+/* 바코드 인식기: 키오스크 화면 안과 일반 페이지 모두에서 쓰므로 색을 직접 지정한다 */
+.scanner { display: grid; gap: 0.5rem; width: 100%; justify-items: center; text-align: center; }
+.sc-view {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #1b1f27;
+  color: #c9d0dd;
+  box-shadow: 0 0 0 3px #1b1f27;
+  transition: box-shadow 0.2s;
+}
+.scanner.compact .sc-view { max-width: 17rem; }
+.sc-view.flash { box-shadow: 0 0 0 6px #2fd26e; }
+.sc-view video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sc-empty { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 0.5rem; padding: 1rem; font-size: 0.9rem; line-height: 1.4; }
+.sc-frame { position: absolute; inset: 14% 10%; }
+.sc-frame i { position: absolute; width: 22%; height: 26%; border: 4px solid #ffd27a; }
+.sc-frame i:nth-child(1) { left: 0; top: 0; border-right: 0; border-bottom: 0; border-radius: 10px 0 0 0; }
+.sc-frame i:nth-child(2) { right: 0; top: 0; border-left: 0; border-bottom: 0; border-radius: 0 10px 0 0; }
+.sc-frame i:nth-child(3) { left: 0; bottom: 0; border-right: 0; border-top: 0; border-radius: 0 0 0 10px; }
+.sc-frame i:nth-child(4) { right: 0; bottom: 0; border-left: 0; border-top: 0; border-radius: 0 0 10px 0; }
+.sc-frame b { position: absolute; left: 4%; right: 4%; height: 3px; background: #ff4d4d; box-shadow: 0 0 8px #ff4d4d; animation: sc-laser 1.8s ease-in-out infinite; }
+@keyframes sc-laser { 0%, 100% { top: 12%; } 50% { top: 86%; } }
+.sc-prompt { font-weight: 900; font-size: 1.05rem; }
+.sc-msg { font-weight: 700; padding: 0.4rem 0.8rem; border-radius: 10px; font-size: 0.95rem; }
+.sc-msg.ok { background: #dcf3e7; color: #0f6b3f; }
+.sc-msg.bad { background: #fde3e2; color: #a51a13; }
+.sc-msg.info { background: #fff1dc; color: #7a4a00; }
+.sc-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; }
+.sc-btn {
+  min-height: 3rem;
+  padding: 0 0.9rem;
+  border-radius: 10px;
+  border: 2px solid #d5d3cf;
+  background: #ffffff;
+  color: #222222;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.sc-btn.main { border-color: #3a69d4; background: #3a69d4; color: #ffffff; font-size: 0.95rem; }
+.sc-privacy { font-size: 0.8rem; opacity: 0.75; }

@@ -1,0 +1,158 @@
+/* 키오스크 기계: 실물이므로 테마와 상관없이 같은 색을 쓴다 (의도적 단일 테마) */
+.kdevice {
+  --bezel: #2a2e37;
+  --bezel-2: #3a3f4b;
+  --bezel-ink: #d9dde6;
+  --slot: #0d0f13;
+  --go: #2fd26e;
+  width: min(100%, 470px);
+  background: linear-gradient(180deg, var(--bezel-2), var(--bezel));
+  border-radius: 30px;
+  padding: 10px 12px 14px;
+  box-shadow: 0 2px 0 #4b5160 inset, 0 18px 40px rgb(20 26 40 / 0.28);
+  display: grid;
+  gap: 10px;
+  color-scheme: light;
+}
+.kd-top { display: flex; justify-content: center; height: 10px; align-items: center; }
+.kd-cam { width: 9px; height: 9px; border-radius: 50%; background: #11141a; box-shadow: 0 0 0 2px #4b5160; }
+
+.kscreen {
+  position: relative;
+  container-type: inline-size;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  height: clamp(560px, 78vh, 820px);
+  display: flex;
+  flex-direction: column;
+  color: #222;
+}
+
+.kd-lower {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 10px;
+}
+.kd-slot {
+  position: relative;
+  min-height: 7.2rem;
+  border-radius: 16px;
+  border: 2px solid #4b5160;
+  background: #232730;
+  color: var(--bezel-ink);
+  cursor: pointer;
+  padding: 0.5rem 0.6rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.35rem;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+.kd-label { position: absolute; top: 0.35rem; left: 0.7rem; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; color: #aeb5c4; }
+.kd-mouth {
+  position: relative;
+  width: 82%;
+  height: 8px;
+  border-radius: 6px;
+  background: var(--slot);
+  box-shadow: 0 1px 0 #555c6b;
+}
+.kd-light { position: absolute; top: 0.45rem; right: 0.7rem; width: 10px; height: 10px; border-radius: 50%; background: #5a606d; }
+.kd-call {
+  font-size: 0.85rem;
+  font-weight: 900;
+  color: #ffd27a;
+}
+
+/* 카드 */
+.kd-plastic {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 78%;
+  aspect-ratio: 1.586;
+  max-width: 100%;
+  transform: translate(-50%, 0) scaleY(0);
+  transform-origin: bottom;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #4b7be8, #2747a8);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.4);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.3s;
+  overflow: hidden;
+}
+.kd-plastic .chip { position: absolute; left: 12%; top: 22%; width: 18%; aspect-ratio: 1.3; border-radius: 4px; background: linear-gradient(135deg, #f3d77b, #c9a43c); }
+.kd-plastic .txt { position: absolute; right: 8%; bottom: 10%; font-size: 0.7rem; color: #fff; font-weight: 700; }
+.kd-card.is-await .kd-plastic { opacity: 1; transform: translate(-50%, -8px) scaleY(1); animation: hover-card 1.2s ease-in-out infinite; }
+.kd-card.is-inserted .kd-plastic { opacity: 1; transform: translate(-50%, 0) scaleY(0.38); }
+.kd-card.is-eject .kd-plastic { opacity: 1; transform: translate(-50%, 0) scaleY(0.62); animation: blink-card 1s ease-in-out infinite; }
+.kd-card.is-await .kd-light, .kd-card.is-eject .kd-light { background: var(--go); box-shadow: 0 0 10px var(--go); animation: blink 0.9s steps(2) infinite; }
+.kd-card.is-inserted .kd-light { background: #ffb02e; box-shadow: 0 0 10px #ffb02e; }
+.kd-card.is-await, .kd-card.is-eject { border-color: #ffd27a; }
+.kd-card .kd-mouth { margin-bottom: 1.6rem; }
+.kd-card.is-await .kd-mouth, .kd-card.is-eject .kd-mouth, .kd-card.is-inserted .kd-mouth { margin-bottom: 0; }
+
+/* 영수증 */
+.kd-printer { justify-content: flex-start; padding-top: 1.8rem; }
+.kd-printer.is-out { border-color: #ffd27a; }
+.kd-paper {
+  position: absolute;
+  left: 50%;
+  top: 4px;
+  width: 70%;
+  height: 0;
+  transform: translateX(-50%);
+  background: #fffef8;
+  border-radius: 0 0 4px 4px;
+  overflow: hidden;
+  transition: height 0.9s ease-out;
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  padding: 0 8px;
+}
+.kd-paper i { display: block; height: 3px; background: #cfcabb; border-radius: 2px; margin-top: 6px; }
+.kd-paper i:nth-child(2) { width: 70%; }
+.kd-paper i:nth-child(4) { width: 50%; }
+.kd-printer.is-out .kd-paper { height: 3.6rem; box-shadow: 0 3px 6px rgb(0 0 0 / 0.35); }
+.kd-printer.is-out .kd-call { position: absolute; bottom: 0.4rem; }
+
+@keyframes hover-card { 0%, 100% { translate: 0 -14px; } 50% { translate: 0 -4px; } }
+@keyframes blink-card { 0%, 100% { filter: none; } 50% { filter: brightness(1.35); } }
+@keyframes blink { 50% { opacity: 0.25; } }
+
+/* 따라하기 강조 상자 (교육자료의 주황 테두리) */
+.guide-layer { position: absolute; inset: 0; pointer-events: none; z-index: 30; overflow: hidden; border-radius: 30px; }
+.guide-box {
+  position: absolute;
+  border: 5px solid var(--orange, #f08a00);
+  border-radius: 14px;
+  box-shadow: 0 0 0 9999px rgb(10 14 24 / 0.38);
+  transition: left 0.25s, top 0.25s, width 0.25s, height 0.25s;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+.guide-finger {
+  position: absolute;
+  width: 54px;
+  height: 54px;
+  filter: drop-shadow(0 3px 4px rgb(0 0 0 / 0.4));
+  animation: tap 1.2s ease-in-out infinite;
+  transition: left 0.25s, top 0.25s;
+}
+.guide-tag {
+  position: absolute;
+  background: #f08a00;
+  color: #fff;
+  font-weight: 900;
+  font-size: 0.95rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  white-space: nowrap;
+  transition: left 0.25s, top 0.25s;
+}
+@keyframes pulse { 50% { border-color: #ffc266; } }
+@keyframes tap { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-6px, -6px) scale(0.94); } }
+.device-wrap { position: relative; width: min(100%, 470px); }
