@@ -1,0 +1,33 @@
+# 키오스크 연습장 — 「키오스크야! 내 주문을 받아줘!」
+
+시니어·디지털 취약계층용 키오스크 체험 웹사이트. 설계 문서는 `HARNESS.md`.
+
+## 실행
+```bash
+npm install
+npm run dev          # http://localhost:5173
+npm run build        # dist/ → HTTPS 정적 호스팅(Netlify, Vercel, GitHub Pages 등)에 올리기
+```
+카메라 바코드 인식은 **HTTPS 주소 또는 localhost**에서만 동작합니다.
+같은 와이파이의 태블릿으로 열 때는 `npx vite --host`로는 카메라가 안 켜지니(https 아님) 정적 호스팅에 올려 쓰세요.
+
+## 테스트
+```bash
+npm run build && npx vite preview --port 4173 &
+CHROME=/path/to/chrome node tests/e2e.mjs            # 따라하기·혼자 해보기 완주
+CHROME=/path/to/chrome node tests/make-fake-cams.mjs # 인쇄 카드 → 가짜 카메라 영상(.y4m) 만들기
+CHROME=/path/to/chrome node tests/camera.mjs         # 가짜 카메라로 실제 바코드 인식 시험
+```
+
+## 진행 상황
+- [x] P1 프로젝트 뼈대, 홈, 글자 크기·선명하게·음성 안내
+- [x] P2 카페 키오스크(CAFE NINE) — 따라하기 18단계 / 혼자 해보기 / 직원 호출 / 카드 투입구·영수증 출구
+- [x] P3 카메라 바코드 인식(내장 인식기 → ZXing 폴백, 사진 인식, 카메라 없을 때 연습 버튼)
+      + 연습용 카드 인쇄(#/print) + 카메라 점검(#/camera-test)
+      + 카페: 카드 스캔 결제·잔액 부족 오류·멤버십 스탬프·쿠폰 할인
+- [ ] P4 미션 모드 + 채점
+- [ ] P5 마트·주차 / P6 기차·병원·관공서 / P7 OX퀴즈·실전모드 / P8 점검·배포
+
+## 새 키오스크 추가
+`src/kiosks/<id>/`에 화면 컴포넌트와 `guide.ts`를 만들고 `src/kiosks/registry.ts`에 등록합니다.
+버튼에 `data-guide="이름"`을 달면 따라하기 단계에서 그 버튼을 주황 상자로 강조할 수 있습니다.
