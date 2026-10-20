@@ -21,6 +21,10 @@ export type OrderResult = {
   when: string;
   extra?: string;
   notes?: string[];
+  /** 영수증의 번호 이름 (기본: 주문번호) */
+  numberLabel?: string;
+  /** 결제 방법 표시 (기본: 신용카드(연습용)) */
+  payment?: string;
 };
 
 export type KioskProps<S> = {
@@ -44,6 +48,8 @@ export type KioskDef<S = any> = {
   guide?: GuideStep<S>[];
   /** 따라하기 중 순서를 벗어났을 때 보여줄 안내 (null이면 정상 진행) */
   guideDetour?: (s: S) => string | null;
+  /** wide: 가로형 태블릿처럼 넓은 기계 — 체험 페이지에서 기계를 위아래로 크게 놓는다 */
+  layout?: "wide";
   /** 이 키오스크 연습에 쓰는 인쇄물 (체험 페이지 옆에 링크로 보여준다) */
   printables?: { to: string; label: string; note: string }[];
   /** 혼자 해보기에서 [직원 호출]을 누르면 보여줄 도움말 */

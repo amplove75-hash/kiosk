@@ -20,11 +20,12 @@ async function guideRun(id = "cafe") {
   await page.goto(BASE);
   if (id === "cafe") await page.screenshot({ path: `${SHOTS}/1-home.png`, fullPage: true });
   await page.click(`a[href='#/kiosk/${id}']`);
-  await page.waitForSelector(".kdevice");
+  await page.waitForSelector(".kdevice, .ktablet");
 
   // 잘못된 곳을 누르면 막혀야 한다
   await sleep(300);
-  await page.click(id === "cafe" ? "[data-guide='order-takeout']" : "[data-guide='tray-apple']", { force: true });
+  const wrong = { cafe: "[data-guide='order-takeout']", burger: "[data-guide='order-dine']", mart: "[data-guide='tray-apple']", restaurant: "[data-guide='start']" }[id];
+  await page.click(wrong, { force: true });
   const toast = await page.textContent(".toast").catch(() => "");
   if (!toast?.includes("다음")) fail(`[${id}] info 단계에서 터치가 막히지 않음: ` + toast);
 
@@ -147,7 +148,99 @@ async function martPractice() {
 
 await guideRun("cafe");
 await practiceRun();
+async function burgerPractice() {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(BASE + "#/kiosk/burger");
+  await page.waitForSelector(".kdevice");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  const tap = async (sel) => { await page.click(sel); await sleep(550); };
+  await tap("[data-guide='order-dine']");
+  await tap("[data-guide='tab-burger']");
+  await tap("[data-guide='item-cheese']");
+  await tap("[data-guide='set-large']");
+  await tap("[data-guide='side-nugget']");
+  await tap("[data-guide='sheet-next']");
+  await tap("[data-guide='drink-orange']");
+  await page.screenshot({ path: `${SHOTS}/13-burger-drink.png` });
+  await tap("[data-guide='sheet-next']");
+  await tap("[data-guide='sheet-plus']");
+  await tap("[data-guide='sheet-add']");
+  await tap("[data-guide='tab-dessert']");
+  await tap("[data-guide='item-cone']");
+  await tap("[data-guide='sheet-add']");
+  const cart = await page.textContent(".k-cart");
+  if (!cart.includes("21,400원") || !cart.includes("치즈버거 라지세트")) fail("버거 장바구니 틀림: " + cart);  // (5,900+2,800+700+800)×2 + 1,000
+  await tap("[data-guide='btn-checkout']");
+  await tap("[data-guide='btn-next']");
+  await tap("[data-guide='pay-card']");
+  await tap("[data-guide='card-slot']");
+  await sleep(2800);
+  await tap("[data-guide='card-slot']");
+  await tap("[data-guide='receipt-slot']");
+  await tap("[data-guide='btn-receipt-ok']");
+  const r = await page.textContent(".receipt-paper");
+  if (!r.includes("나인버거") || !r.includes("(L) 너겟 4조각") || !r.includes("(L) 오렌지주스") || !r.includes("21,400원")) fail("버거 영수증 틀림: " + r);
+  if (!(await page.$(".panel.success"))) fail("버거 혼자 해보기 완주 실패");
+  await page.screenshot({ path: `${SHOTS}/14-burger-done.png`, fullPage: true });
+  if (errors.length) fail("페이지 오류: " + errors.join(" | "));
+  await page.close();
+}
+
+async function restaurantPractice() {
+  const page = await browser.newPage({ viewport: { width: 1366, height: 900 } });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(BASE + "#/kiosk/restaurant");
+  await page.waitForSelector(".ktablet");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  const tap = async (sel) => { await page.click(sel); await sleep(550); };
+  await tap("[data-guide='start']");
+  await tap("[data-guide='item-jeyuk']");
+  await tap("[data-guide='sheet-add']");
+  await page.screenshot({ path: `${SHOTS}/15-resto-menu.png` });
+  await tap("[data-guide='cart-btn']");
+  await tap("[data-guide='order-btn']");
+  await tap("[data-guide='order-confirm']");
+  await tap("[data-guide='order-done-ok']");
+  // 추가 주문
+  await tap("[data-guide='cat-drink']");
+  await tap("[data-guide='item-cola']");
+  await tap("[data-guide='sheet-add']");
+  await tap("[data-guide='cart-btn']");
+  await tap("[data-guide='order-btn']");
+  await tap("[data-guide='order-confirm']");
+  await tap("[data-guide='order-done-ok']");
+  // 직원 호출: 앞접시 + 수저
+  await tap("[data-guide='call-btn']");
+  if (!(await page.isDisabled("[data-guide='call-send']"))) fail("아무것도 안 골랐는데 호출하기 활성");
+  await tap("[data-guide='call-plate']");
+  await tap("[data-guide='call-spoon']");
+  await tap("[data-guide='call-send']");
+  const sent = await page.textContent(".k-dialog");
+  if (!sent.includes("앞접시, 수저")) fail("호출 내용 틀림: " + sent);
+  await tap("[data-guide='call-ok']");
+  await tap("[data-guide='history-btn']");
+  const hist = await page.textContent(".resto-history");
+  if (!hist.includes("1차 주문") || !hist.includes("2차 주문") || !hist.includes("11,000원")) fail("주문내역 틀림: " + hist);
+  await tap("[data-guide='pay-request']");
+  await tap("[data-guide='bill-ok']");
+  const r = await page.textContent(".receipt-paper");
+  if (!r.includes("나인식당") || !r.includes("7번") || !r.includes("카운터에서 결제") || !r.includes("11,000원")) fail("식당 내역서 틀림: " + r);
+  if (!(await page.$(".panel.success"))) fail("식당 혼자 해보기 완주 실패");
+  await page.screenshot({ path: `${SHOTS}/16-resto-done.png`, fullPage: true });
+  if (errors.length) fail("페이지 오류: " + errors.join(" | "));
+  await page.close();
+}
+
 await guideRun("mart");
 await martPractice();
+await guideRun("burger");
+await burgerPractice();
+await guideRun("restaurant");
+await restaurantPractice();
 await browser.close();
 console.log(process.exitCode ? "E2E 실패" : "E2E 통과");

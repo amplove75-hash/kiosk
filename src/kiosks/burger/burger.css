@@ -1,0 +1,56 @@
+/* 나인버거 (가상 브랜드) — 주황 계열 */
+.burger {
+  --k-brand: #c94f00;
+  --k-brand-dark: #9a3a00;
+  --k-tab: #4a1f00;
+}
+.burger .k-logo-n { color: var(--k-brand); font-family: var(--font-body); font-weight: 900; }
+.burger .k-orderno { border-color: var(--k-brand); }
+.burger .k-orderno b { color: var(--k-brand); }
+.k-tabs.five { grid-template-columns: repeat(3, 1fr); }
+@container (min-width: 400px) { .k-tabs.five { grid-template-columns: repeat(5, 1fr); } }
+.k-price .from { font-weight: 700; }
+
+.burger-attract .attract-poster { align-items: flex-start; }
+.burger-title { font-family: var(--font-body); font-weight: 900; font-size: 2.3rem; line-height: 1.15; margin-top: 0.8rem; }
+.burger-hero { margin-top: auto; align-self: center; display: flex; align-items: flex-end; gap: 0.4rem; }
+.burger-hero svg { filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.25)); }
+.burger-hero-side { display: grid; }
+.burger-hero-cap { align-self: center; font-weight: 700; opacity: 0.95; }
+
+.burger-stepno { margin-left: auto; align-self: flex-start; font-weight: 900; color: var(--k-brand); background: #fff1e6; border-radius: 999px; padding: 0.15rem 0.6rem; font-size: 0.85rem; }
+.burger-sets { display: grid; gap: 0.5rem; }
+.burger-sets button {
+  min-height: 4.2rem;
+  border-radius: 12px;
+  border: 2px solid var(--k-line);
+  background: #fff;
+  color: var(--k-ink);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "l p" "s p";
+  text-align: left;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
+}
+.burger-sets b { grid-area: l; font-size: 1.15rem; }
+.burger-sets small { grid-area: s; color: var(--k-ink-soft); }
+.burger-sets .k-price { grid-area: p; font-size: 1.05rem; }
+.burger-sets button[aria-pressed="true"] { border-color: var(--k-brand); background: #fff1e6; }
+.burger-choices { grid-template-columns: repeat(2, 1fr); }
+.burger-choices button { min-height: 5.4rem; gap: 0.1rem; }
+.burger-choices button[aria-pressed="true"] { border-color: var(--k-brand) !important; background: #fff1e6 !important; color: var(--k-brand-dark) !important; }
+.burger-summary { list-style: none; margin: 0; padding: 0.6rem 0.8rem; background: var(--k-bg); border-radius: 12px; display: grid; gap: 0.3rem; }
+.burger-summary li { display: flex; justify-content: space-between; gap: 1rem; }
+.burger-summary span { color: var(--k-ink-soft); }
+.burger-pickup {
+  margin-top: 0.4rem;
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  background: #1f2430;
+  color: #fff;
+  border-radius: 14px;
+  padding: 0.8rem 1rem;
+}
+.burger-pickup-screen { font-family: ui-monospace, "Courier New", monospace; font-size: 1.8rem; font-weight: 900; color: #ffd166; letter-spacing: 0.1em; }

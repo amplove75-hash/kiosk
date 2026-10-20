@@ -21,7 +21,7 @@ export function App() {
       </Routes>
       <footer className="footer no-print">
         <div className="wrap">
-          교육자료: 주식회사 나인필 「디지털 전환 교육 — 키오스크야! 내 주문을 받아줘!」 · 이 사이트의 상호와 결제는 모두 연습용이에요.
+          교육자료: 에제르코칭 「디지털 전환 교육 — 키오스크야! 내 주문을 받아줘!」 · 이 사이트의 상호와 결제는 모두 연습용이에요.
         </div>
       </footer>
       <Toast />

@@ -12,6 +12,9 @@ export const Icon = {
   burger: ({ size = 30 }: P) => (
     <svg {...base(size)}><path d="M6 14a10 7 0 0 1 20 0z" /><path d="M5 18h22" /><path d="M6 22h20a3 3 0 0 1-3 4H9a3 3 0 0 1-3-4z" /></svg>
   ),
+  restaurant: ({ size = 30 }: P) => (
+    <svg {...base(size)}><rect x="9" y="5" width="16" height="11" rx="2" /><path d="M5 22h22" /><path d="M7 22a9 6 0 0 0 18 0" /><path d="M14 20h5" /></svg>
+  ),
   mart: ({ size = 30 }: P) => (
     <svg {...base(size)}><path d="M3 5h4l3 14h14l3-10H9" /><circle cx="12" cy="25" r="2" /><circle cx="22" cy="25" r="2" /></svg>
   ),

@@ -5,6 +5,8 @@ import "./styles/kiosk.css";
 import "./kiosks/cafe/cafe.css";
 import "./scanner/scanner.css";
 import "./kiosks/mart/mart.css";
+import "./kiosks/burger/burger.css";
+import "./kiosks/restaurant/restaurant.css";
 import "./settings";
 import { App } from "./App";
 

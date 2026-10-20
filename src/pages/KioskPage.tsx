@@ -103,7 +103,7 @@ export function KioskPage() {
   const total = guide?.length ?? 0;
 
   return (
-    <main className="wrap practice">
+    <main className={`wrap practice ${def.layout === "wide" ? "is-wide" : ""}`}>
       <div className="practice-head">
         <h1>{def.place} 키오스크</h1>
         <div className="modes" role="group" aria-label="연습 방법">
@@ -196,12 +196,12 @@ export function KioskPage() {
         )}
         {receipt && (
           <div className="panel">
-            <h2>내가 챙긴 영수증</h2>
+            <h2>{receipt.payment ? "주문 내역서" : "내가 챙긴 영수증"}</h2>
             <div className="receipt-paper" aria-label="영수증">
               <div style={{ textAlign: "center", fontWeight: 900 }}>{receipt.shop}</div>
               <div style={{ textAlign: "center" }}>{receipt.when} · {receipt.extra}</div>
               <hr />
-              <div style={{ textAlign: "center" }}>주문번호</div>
+              <div style={{ textAlign: "center" }}>{receipt.numberLabel ?? "주문번호"}</div>
               <div className="order-no">{receipt.orderNo}</div>
               <hr />
               {receipt.lines.map((l, i) => (
@@ -212,12 +212,12 @@ export function KioskPage() {
               ))}
               <hr />
               <div className="r-row" style={{ fontWeight: 900 }}><span>합계</span><span>{won(receipt.total)}</span></div>
-              <div className="r-row"><span>결제</span><span>신용카드(연습용)</span></div>
+              <div className="r-row"><span>결제</span><span>{receipt.payment ?? "신용카드(연습용)"}</span></div>
               {receipt.notes?.map((n) => <div key={n} style={{ fontSize: "0.85rem" }}>{n}</div>)}
               <hr />
               <div style={{ textAlign: "center", fontSize: "0.8rem" }}>연습용 영수증 · 실제 결제 아님</div>
             </div>
-            <p>영수증의 <b>주문번호</b>를 부르면 음료를 받으러 가요.</p>
+            <p>{receipt.payment ? "카운터에서 테이블 번호를 말하고 계산해요." : <>영수증의 <b>번호</b>는 상품을 받거나 교환할 때 필요해요.</>}</p>
           </div>
         )}
         <div className="panel">
