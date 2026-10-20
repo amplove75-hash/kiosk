@@ -278,13 +278,13 @@ a.place:hover { border-color: var(--blue); box-shadow: var(--shadow); }
   gap: 1.2rem;
   padding-block: 1.2rem 2.5rem;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "head" "guide" "device" "side";
+  grid-template-areas: "switch" "head" "guide" "device" "side";
 }
 @media (min-width: 960px) {
   .practice {
     grid-template-columns: 470px minmax(0, 1fr);
-    grid-template-areas: "head head" "device guide" "device side";
-    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "switch switch" "head head" "device guide" "device side";
+    grid-template-rows: auto auto auto 1fr;
     align-items: start;
   }
 }
@@ -521,3 +521,31 @@ a.place:hover { border-color: var(--blue); box-shadow: var(--shadow); }
   .pcard-band, .pprod-pic { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .is-products .print-h { margin-bottom: 3mm; }
 }
+
+/* 키오스크 바로가기 줄 */
+.kiosk-switch {
+  grid-area: switch;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
+  scrollbar-width: thin;
+}
+.kiosk-switch-item {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 3.2rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 2px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.kiosk-switch-item svg { color: var(--blue); }
+.kiosk-switch-item:hover { border-color: var(--blue); }
+.kiosk-switch-item[aria-current="page"] { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }

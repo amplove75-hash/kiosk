@@ -203,7 +203,7 @@
 @media (min-width: 960px) {
   .practice.is-wide {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "head" "guide" "device" "side";
+    grid-template-areas: "switch" "head" "guide" "device" "side";
   }
   .practice.is-wide .guide-area:has(.bubble) { position: sticky; top: 70px; z-index: 20; }
   .practice.is-wide .side-area { grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr)); align-items: start; }

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, NavLink, useParams } from "react-router-dom";
 import { KIOSKS } from "../kiosks/registry";
 import type { Mode, OrderResult } from "../engine/types";
 import { GuideOverlay } from "../engine/GuideOverlay";
@@ -9,6 +9,31 @@ import { speak, stopSpeaking } from "../lib/speech";
 import { sounds } from "../lib/sound";
 import { won } from "../lib/format";
 import { RULES } from "./Home";
+import { Icon } from "../components/Icons";
+
+/** 만들어진 키오스크로 바로 옮겨 가는 줄 */
+function KioskSwitcher({ current }: { current: string }) {
+  const ref = useRef<HTMLElement>(null);
+  // 휴대폰처럼 좁은 화면에서도 지금 키오스크가 보이도록 가로로 밀어 둔다
+  useEffect(() => {
+    const nav = ref.current;
+    const cur = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (nav && cur) nav.scrollLeft = cur.offsetLeft - nav.offsetLeft - (nav.clientWidth - cur.offsetWidth) / 2;
+  }, [current]);
+  return (
+    <nav className="kiosk-switch" aria-label="다른 키오스크로 가기" ref={ref}>
+      {KIOSKS.filter((k) => k.status === "ready").map((k) => {
+        const I = Icon[k.icon];
+        return (
+          <NavLink key={k.id} to={`/kiosk/${k.id}`} className="kiosk-switch-item" aria-current={k.id === current ? "page" : undefined}>
+            <I size={24} />
+            <span>{k.place}</span>
+          </NavLink>
+        );
+      })}
+    </nav>
+  );
+}
 
 export function KioskPage() {
   const { id } = useParams();
@@ -104,6 +129,7 @@ export function KioskPage() {
 
   return (
     <main className={`wrap practice ${def.layout === "wide" ? "is-wide" : ""}`}>
+      <KioskSwitcher current={def.id} />
       <div className="practice-head">
         <h1>{def.place} 키오스크</h1>
         <div className="modes" role="group" aria-label="연습 방법">

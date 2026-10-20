@@ -1,4 +1,5 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { HashRouter, Route, Routes, useParams } from "react-router-dom";
 import { TopBar } from "./components/TopBar";
 import { Toast } from "./components/Toast";
 import { Home } from "./pages/Home";
@@ -6,13 +7,22 @@ import { KioskPage } from "./pages/KioskPage";
 import { PrintPage } from "./pages/PrintPage";
 import { CameraTest } from "./pages/CameraTest";
 
+/** 다른 키오스크로 옮기면 체험 화면을 처음부터 새로 시작한다 */
+function KioskRoute() {
+  const { id } = useParams();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+  return <KioskPage key={id} />;
+}
+
 export function App() {
   return (
     <HashRouter>
       <TopBar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/kiosk/:id" element={<KioskPage />} />
+        <Route path="/kiosk/:id" element={<KioskRoute />} />
         <Route path="/print" element={<PrintPage />} />
         <Route path="/print/cards" element={<PrintPage section="cards" />} />
         <Route path="/print/products" element={<PrintPage section="products" />} />
