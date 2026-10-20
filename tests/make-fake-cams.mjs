@@ -25,6 +25,16 @@ await p.waitForTimeout(200);
 await p.locator(".big-code-box").screenshot({ path: `${OUT}/PRODUCT-MILK.png` });
 await p.locator(".modal .btn.primary").click();
 execFileSync("python3", ["tests/png2y4m.py", `${OUT}/PRODUCT-MILK.png`, `${OUT}/PRODUCT-MILK.y4m`]);
+// 인쇄 크기 그대로의 상품 라벨(라면)
+await p.goto(BASE + "#/print/products");
+await p.waitForSelector(".pprod .bc rect");
+await p.emulateMedia({ media: "print" });
+await p.setViewportSize({ width: 794, height: 1123 });
+await p.waitForTimeout(300);
+await p.locator(".pprod", { hasText: "라면" }).first().screenshot({ path: `${OUT}/LABEL-RAMEN.png` });
+execFileSync("python3", ["tests/png2y4m.py", `${OUT}/LABEL-RAMEN.png`, `${OUT}/LABEL-RAMEN.y4m`]);
+await p.emulateMedia({ media: "screen" });
+await p.setViewportSize({ width: 1200, height: 900 });
 await p.screenshot({ path: "tests/shots/6-print.png", fullPage: true });
 await b.close();
 console.log("fake cams ready");

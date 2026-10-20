@@ -55,11 +55,17 @@ export function Home() {
       <section className="wrap section" aria-labelledby="prep">
         <h2 id="prep">수업 준비</h2>
         <div className="kiosk-grid">
-          <Link to="/print" className="place">
+          <Link to="/print/cards" className="place">
             <span className="icon">
               <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden><rect x="4" y="8" width="24" height="16" rx="3" /><path d="M9 13v6M12 13v6M15 13v6M19 13v6M22 13v6" /></svg>
             </span>
-            <span className="txt"><span className="name">연습용 카드 인쇄</span><span className="meta">체험 신용카드, 멤버십, 쿠폰, 상품 바코드를 A4로 뽑아요</span></span>
+            <span className="txt"><span className="name">연습용 카드 인쇄</span><span className="meta">체험 신용카드, 멤버십, 쿠폰, 주차권을 A4로 뽑아요</span></span>
+          </Link>
+          <Link to="/print/products" className="place">
+            <span className="icon">
+              <svg width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" aria-hidden><path d="M3 5h4l3 14h14l3-10H9" /><circle cx="12" cy="25" r="2" /><circle cx="22" cy="25" r="2" /></svg>
+            </span>
+            <span className="txt"><span className="name">마트 상품 바코드 인쇄</span><span className="meta">우유·라면·사과 등 12종 상품 라벨을 뽑아 셀프계산대에서 찍어요</span></span>
           </Link>
           <Link to="/camera-test" className="place">
             <span className="icon">

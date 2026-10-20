@@ -10,6 +10,7 @@ export const KIOSKS: KioskDef[] = [
     summary: "음료를 고르고 카드로 결제해요",
     Component: CafeKiosk, guide: cafeGuide, guideDetour: cafeDetour, hint: cafeHint,
     guideTitle: "아이스 아메리카노 1잔 주문하기",
+    printables: [{ to: "/print/cards", label: "체험카드·멤버십·쿠폰 인쇄", note: "카드 결제, 스탬프 적립, 쿠폰 할인을 카메라로 연습해요" }],
   },
   { id: "burger", place: "패스트푸드", brand: "나인버거", group: "food", icon: "burger", status: "soon", summary: "세트 메뉴 고르기" },
   { id: "rail", place: "기차역", brand: "나인레일", group: "ticket", icon: "train", status: "soon", summary: "승차권 사고 좌석 고르기" },
@@ -19,6 +20,10 @@ export const KIOSKS: KioskDef[] = [
     summary: "상품 바코드를 직접 찍고 계산해요",
     Component: MartKiosk, guide: martGuide, guideDetour: martDetour, hint: martHint,
     guideTitle: "우유 1개, 라면 2개 계산하기",
+    printables: [
+      { to: "/print/products", label: "마트 상품 바코드 인쇄", note: "우유·라면 등 12종 라벨. 물건에 붙여 하나씩 찍어봐요" },
+      { to: "/print/cards", label: "체험카드·회원카드 인쇄", note: "카드 결제와 포인트 적립을 카메라로 연습해요" },
+    ],
   },
   { id: "hospital", place: "병원", brand: "나인병원", group: "life", icon: "hospital", status: "soon", summary: "접수하고 진료비 내기" },
   { id: "civil", place: "무인민원발급기", brand: "나인시청", group: "life", icon: "civil", status: "soon", summary: "주민등록등본 떼기" },

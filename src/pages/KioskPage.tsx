@@ -180,6 +180,20 @@ export function KioskPage() {
       </div>
 
       <div className="side-area">
+        {def.printables && (
+          <div className="panel">
+            <h2>카메라로 연습하려면</h2>
+            <p className="muted-note">인쇄한 바코드를 카메라에 비추면 진짜처럼 찍혀요. 카메라가 없어도 화면만으로 끝까지 할 수 있어요.</p>
+            <div className="print-links">
+              {def.printables.map((p) => (
+                <Link key={p.to} to={p.to} className="print-link">
+                  <b>{p.label}</b>
+                  <span>{p.note}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
         {receipt && (
           <div className="panel">
             <h2>내가 챙긴 영수증</h2>

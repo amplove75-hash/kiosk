@@ -78,6 +78,16 @@ await withCam("PRODUCT-MILK", async (page) => {
   console.log("✓ 마트 상품 바코드 인식 → 목록에 담김");
 });
 
+// 4-2) 인쇄 크기 상품 라벨도 읽힌다
+await withCam("LABEL-RAMEN", async (page) => {
+  await page.goto(BASE + "#/kiosk/mart");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  await page.click("[data-guide='start-btn']");
+  await page.waitForSelector(".mart-row:has-text('라면')", { timeout: 15000 }).catch(() => fail("인쇄 라벨 바코드 인식 안 됨"));
+  console.log("✓ 인쇄용 상품 라벨(라면) 인식 → 목록에 담김");
+});
+
 // 5) 마트 회원 적립 칸에 카페 멤버십을 비추면 거절
 await withCam("KX-MEM-CAFE-0001", async (page) => {
   await page.goto(BASE + "#/kiosk/mart");

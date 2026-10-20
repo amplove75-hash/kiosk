@@ -440,24 +440,51 @@ a.place:hover { border-color: var(--blue); box-shadow: var(--shadow); }
 .pcard-code.is-qr .qr svg { width: 5.2rem; height: 5.2rem; display: block; }
 .pcard-foot { display: flex; justify-content: space-between; gap: 0.4rem; font-size: 0.72rem; color: #4b5563; font-family: ui-monospace, "Courier New", monospace; }
 .pcard-foot .wm { font-family: var(--font-body); font-weight: 700; color: #b42318; }
-.pproducts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr)); }
+.pproducts { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr)); }
 .pprod {
   background: #ffffff;
   color: #1a1a1a;
   border: 1.5px dashed #9aa3b5;
   border-radius: 12px;
-  padding: 0.7rem;
+  padding: 0.6rem 0.7rem 0.5rem;
   display: grid;
-  justify-items: center;
-  gap: 0.35rem;
+  gap: 0.3rem;
   cursor: pointer;
   font-family: var(--font-body);
+  text-align: left;
 }
 .pprod:hover { border-color: var(--blue); }
-.pprod-pic { width: 3.4rem; height: 3.4rem; border-radius: 50%; display: grid; place-items: center; font-weight: 900; color: #333; }
-.pprod-name { display: grid; text-align: center; line-height: 1.3; }
-.pprod-name small { color: #4b5563; }
-.pprod .bc { max-width: 100%; height: auto; }
+.pprod-top { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.6rem; align-items: center; }
+.pprod-pic { width: 3.4rem; height: 3.4rem; border-radius: 12px; display: grid; place-items: center; }
+.pprod-name { display: grid; line-height: 1.25; min-width: 0; }
+.pprod-name b { font-size: 1.1rem; }
+.pprod-name small { color: #4b5563; font-size: 0.8rem; }
+.pprod-shop { color: #0f7a43 !important; font-weight: 900; letter-spacing: 0.04em; white-space: nowrap; }
+.pprod-name b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pprod-price { font-weight: 900; font-size: 1rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pprod-price small { font-weight: 500; }
+.pprod-code { display: grid; place-items: center; }
+.pprod-code .bc { max-width: 100%; height: auto; }
+.pprod-wm { font-size: 0.7rem; font-weight: 700; color: #b42318; text-align: right; }
+.print-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.print-tabs a {
+  min-height: 3rem; padding: 0 1rem; border-radius: 12px;
+  display: inline-flex; align-items: center;
+  border: 2px solid var(--line); background: var(--surface); color: var(--ink);
+  font-weight: 700; text-decoration: none;
+}
+.print-tabs a.active { background: var(--blue); border-color: var(--blue); color: var(--on-blue); }
+.print-links { display: grid; gap: 0.6rem; }
+.print-link {
+  display: grid; gap: 0.15rem;
+  padding: 0.8rem 1rem; border-radius: 14px;
+  border: 2px solid var(--line); background: var(--surface-2);
+  color: var(--ink); text-decoration: none;
+}
+.print-link:hover { border-color: var(--blue); }
+.print-link b { color: var(--blue); }
+.print-link span { color: var(--ink-soft); font-size: 0.92rem; }
+.big-code > svg { justify-self: center; }
 .big-code { text-align: center; justify-items: center; }
 .big-code-box { background: #ffffff; padding: 1rem; border-radius: 12px; width: 100%; display: grid; place-items: center; }
 .big-code-box .bc { max-width: 100%; height: auto; }
@@ -484,7 +511,13 @@ a.place:hover { border-color: var(--blue); box-shadow: var(--shadow); }
   .page-break { break-before: page; }
   .pcards { grid-template-columns: repeat(2, 85.6mm); gap: 4mm; justify-content: center; }
   .pcard { width: 85.6mm; height: 54mm; aspect-ratio: auto; border-radius: 3mm; break-inside: avoid; border-color: #888; }
-  .pproducts { grid-template-columns: repeat(3, 1fr); gap: 4mm; }
-  .pprod { break-inside: avoid; border-color: #888; }
+  .pproducts { grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+  .pprod { break-inside: avoid; border-color: #888; padding: 2.5mm 3mm 2mm; gap: 1.5mm; font-size: 10pt; }
+  .pprod-pic { width: 13mm; height: 13mm; border-radius: 3mm; }
+  .pprod-pic svg { width: 10mm; height: 10mm; }
+  .pprod-name b { font-size: 12pt; }
+  .pprod-code .bc { width: 100%; max-height: 30mm; }
+  .print-intro, .print-tabs { display: none; }
   .pcard-band, .pprod-pic { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .is-products .print-h { margin-bottom: 3mm; }
 }

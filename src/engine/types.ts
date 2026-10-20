@@ -44,6 +44,8 @@ export type KioskDef<S = any> = {
   guide?: GuideStep<S>[];
   /** 따라하기 중 순서를 벗어났을 때 보여줄 안내 (null이면 정상 진행) */
   guideDetour?: (s: S) => string | null;
+  /** 이 키오스크 연습에 쓰는 인쇄물 (체험 페이지 옆에 링크로 보여준다) */
+  printables?: { to: string; label: string; note: string }[];
   /** 혼자 해보기에서 [직원 호출]을 누르면 보여줄 도움말 */
   hint?: (s: S) => string;
 };
