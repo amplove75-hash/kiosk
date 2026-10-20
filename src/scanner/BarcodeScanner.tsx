@@ -31,7 +31,9 @@ export function BarcodeScanner(props: {
   compact?: boolean;
   guideId?: string;
 }) {
-  const camOn = useSettings((s) => s.camera);
+  // 키오스크 화면 안(compact)에서는 버튼 없이 항상 카메라를 켠다
+  const camSetting = useSettings((s) => s.camera);
+  const camOn = props.compact ? true : camSetting;
   const setSettings = useSettings((s) => s.set);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -182,20 +184,24 @@ export function BarcodeScanner(props: {
       </div>
       <p className="sc-prompt">{props.prompt}</p>
       {msg && <p className={`sc-msg ${msg.tone}`} role="status">{msg.text}</p>}
-      <div className="sc-actions">
+      {(props.fallback || !props.compact) && <div className="sc-actions">
         {props.fallback && (
           <button type="button" className="sc-btn main" onClick={props.fallback.onClick} data-guide="scan-fallback">
             {props.fallback.label}
           </button>
         )}
-        <button type="button" className="sc-btn" onClick={() => fileRef.current?.click()}>
-          사진으로 인식하기
-        </button>
-        <button type="button" className="sc-btn" onClick={() => setSettings({ camera: !camOn })}>
-          {camOn ? "카메라 끄기" : "카메라 켜기"}
-        </button>
+        {!props.compact && (
+          <>
+            <button type="button" className="sc-btn" onClick={() => fileRef.current?.click()}>
+              사진으로 인식하기
+            </button>
+            <button type="button" className="sc-btn" onClick={() => setSettings({ camera: !camOn })}>
+              {camOn ? "카메라 끄기" : "카메라 켜기"}
+            </button>
+          </>
+        )}
         <input ref={fileRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => onFile(e.target.files?.[0])} />
-      </div>
+      </div>}
       {!props.compact && <p className="sc-privacy">카메라 화면은 이 기기 안에서만 쓰고, 저장하거나 보내지 않아요.</p>}
     </div>
   );
