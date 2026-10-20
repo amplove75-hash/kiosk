@@ -16,7 +16,7 @@ export function KioskPage() {
   const voice = useSettings((s) => s.voice);
   const toast = useToast((t) => t.show);
 
-  const [mode, setMode] = useState<Mode>("guide");
+  const [mode, setMode] = useState<Mode>("practice");
   const [run, setRun] = useState(0);
   const [kState, setKState] = useState<any>(null);
   const [stepIdx, setStepIdx] = useState(0);
@@ -107,8 +107,8 @@ export function KioskPage() {
       <div className="practice-head">
         <h1>{def.place} 키오스크</h1>
         <div className="modes" role="group" aria-label="연습 방법">
-          <button aria-pressed={mode === "guide"} onClick={() => restart("guide")}>따라하기</button>
           <button aria-pressed={mode === "practice"} onClick={() => restart("practice")}>혼자 해보기</button>
+          <button aria-pressed={mode === "guide"} onClick={() => restart("guide")}>따라하기</button>
           <button disabled title="다음 업데이트에서 열려요">미션 (준비 중)</button>
         </div>
       </div>
@@ -144,6 +144,7 @@ export function KioskPage() {
             <h2>혼자 해보기</h2>
             <p>안내 없이 자유롭게 주문해 보세요. 실제 키오스크처럼 내가 직접 고르고 결제해요.</p>
             <p>막히면 언제든 <b>직원 호출</b>을 누르세요.</p>
+            <p className="muted-note">처음이라 어렵다면 위의 <b>따라하기</b>를 누르면 한 단계씩 알려드려요.</p>
             <div className="bubble-row" style={{ display: "flex", flexWrap: "wrap", gap: "0.6rem" }}>
               <button className="help-btn" onClick={() => { setHelp(true); if (voice && def.hint && kState) speak(def.hint(kState)); }}>
                 직원 호출

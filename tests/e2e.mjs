@@ -21,6 +21,9 @@ async function guideRun(id = "cafe") {
   if (id === "cafe") await page.screenshot({ path: `${SHOTS}/1-home.png`, fullPage: true });
   await page.click(`a[href='#/kiosk/${id}']`);
   await page.waitForSelector(".kdevice, .ktablet");
+  // 기본은 혼자 해보기 — 따라하기로 바꾼다
+  if (await page.$(".bubble")) fail(`[${id}] 기본값이 따라하기임`);
+  await page.click("button:has-text('따라하기')");
 
   // 잘못된 곳을 누르면 막혀야 한다
   await sleep(300);
