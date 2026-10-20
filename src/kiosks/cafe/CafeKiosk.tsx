@@ -197,7 +197,7 @@ export function CafeKiosk({ onState, onComplete, onReceipt }: KioskProps<CafeSta
 
   return (
     <KioskDevice card={card} receiptOut={s.screen === "receipt" && !s.receiptTaken} onCardSlot={onCardSlot} onReceipt={onReceiptSlot}>
-      <div className="cafe">
+      <div className="kx cafe">
         {s.screen === "attract" && <Attract onPick={(o) => dispatch({ t: "start", orderType: o })} />}
         {s.screen === "menu" && <MenuScreen s={s} dispatch={dispatch} />}
         {s.screen === "confirm" && <Confirm s={s} dispatch={dispatch} />}

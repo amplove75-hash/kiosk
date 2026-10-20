@@ -1,0 +1,177 @@
+/* 나인마트 셀프계산대 (가상 브랜드) — 초록 계열. 공통 키오스크 스타일(.kx)을 이어 쓴다 */
+.mart {
+  --k-brand: #0f7a43;
+  --k-brand-dark: #0b5c33;
+  --k-tab: #0b5c33;
+}
+.mart .k-logo-n { color: var(--k-brand); font-family: var(--font-body); font-weight: 900; }
+.mart .k-price { color: #c2410c; }
+.mart .k-summary dd { color: #c2410c; }
+.mart .k-orderno b { color: var(--k-brand); }
+.mart .k-orderno { border-color: var(--k-brand); }
+.mart .k-cart { border-top-color: var(--k-brand); }
+
+/* 대기화면 */
+.mart-attract { flex: 1; display: flex; flex-direction: column; background: var(--k-brand); color: #fff; }
+.mart-attract-top {
+  flex: 1;
+  padding: 1.6rem 1.4rem 1rem;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  text-align: center;
+  gap: 0.6rem;
+}
+.mart-attract-top h2 { font-family: var(--font-body); font-weight: 900; font-size: 2.2rem; letter-spacing: 0.04em; margin-top: 1.2rem; }
+.mart-attract-top p { font-size: 1.15rem; opacity: 0.95; }
+.mart-scan-illust { margin-top: 1.4rem; max-width: 100%; }
+.mart-attract-bottom { padding: 1rem 1rem 1.3rem; background: var(--k-brand-dark); display: grid; gap: 0.6rem; text-align: center; }
+.k-btn.big { min-height: 4.4rem; font-size: 1.3rem; }
+.mart .k-btn.white { color: var(--k-brand-dark); }
+.mart-attract-note { font-size: 0.85rem; opacity: 0.9; }
+
+/* 스캔 화면 */
+.mart-scan {
+  background: #eef7f1;
+  border-bottom: 2px solid #cfe7d8;
+  padding: 0.6rem 0.6rem 0.5rem;
+  display: grid;
+  gap: 0.3rem;
+  justify-items: center;
+  text-align: center;
+}
+.mart-scan-say { font-weight: 900; font-size: 1.1rem; color: var(--k-brand-dark); }
+/* 카메라는 왼쪽에 작게, 안내와 버튼은 오른쪽 — 찍은 상품 목록이 넉넉히 보이도록 */
+.mart-scan .scanner {
+  grid-template-columns: minmax(7rem, 9.5rem) minmax(0, 1fr);
+  align-items: center;
+  justify-items: start;
+  text-align: left;
+  column-gap: 0.6rem;
+}
+.mart-scan .scanner .sc-view { grid-column: 1; grid-row: 1 / span 3; max-width: none; }
+.mart-scan .scanner > :not(.sc-view) { grid-column: 2; }
+.mart-scan .scanner .sc-empty { font-size: 0.72rem; padding: 0.4rem; }
+.mart-scan .scanner .sc-empty svg { width: 26px; height: 26px; }
+.mart-scan .scanner .sc-prompt { font-size: 0.85rem; }
+.mart-scan .scanner .sc-msg { font-size: 0.8rem; padding: 0.3rem 0.5rem; }
+.mart-scan .scanner .sc-actions { justify-content: flex-start; }
+.mart-scan .scanner .sc-actions .sc-btn { min-height: 2.6rem; font-size: 0.78rem; padding: 0 0.6rem; }
+.mart-scan-alt { font-size: 0.82rem; }
+.mart-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  padding: 0.5rem;
+}
+.mart-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "pic name x" "pic qty amt";
+  align-items: center;
+  column-gap: 0.5rem;
+  row-gap: 0.15rem;
+  background: var(--k-surface);
+  border: 2px solid var(--k-line);
+  border-radius: 12px;
+  padding: 0.35rem 0.45rem;
+}
+.mart-row > svg { grid-area: pic; }
+.mart-row-name { grid-area: name; display: grid; line-height: 1.25; min-width: 0; }
+.mart-row-name small { color: var(--k-ink-soft); font-size: 0.75rem; }
+.mart-row .k-qty { grid-area: qty; }
+.mart-row-amt { grid-area: amt; font-weight: 900; font-variant-numeric: tabular-nums; justify-self: end; }
+.mart-row .k-x { grid-area: x; justify-self: end; width: 2.2rem; height: 2.2rem; background: var(--k-bg); }
+.mart-row.is-last { border-color: var(--k-brand); background: #eef7f1; }
+.mart-row.is-last .mart-row-name b::after {
+  content: "방금 찍음";
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #fff;
+  background: var(--k-brand);
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  vertical-align: middle;
+}
+
+/* 봉투 / 회원 */
+.mart-bags { display: grid; gap: 0.5rem; }
+.mart-bags button {
+  min-height: 4rem;
+  border-radius: 12px;
+  border: 2px solid var(--k-line);
+  background: var(--k-surface);
+  color: var(--k-ink);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "l p" "s p";
+  text-align: left;
+  align-items: center;
+  padding: 0.5rem 0.9rem;
+}
+.mart-bags b { grid-area: l; font-size: 1.05rem; }
+.mart-bags small { grid-area: s; color: var(--k-ink-soft); }
+.mart-bags .k-price { grid-area: p; }
+.mart-bags button[aria-pressed="true"] { border-color: var(--k-brand); background: #eef7f1; }
+.mart .k-pay button[aria-pressed="true"] { border-color: var(--k-brand); background: #eef7f1; }
+.mart-member-info {
+  border-radius: 14px;
+  border: 2px dashed var(--k-line);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.3rem;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+}
+.k-total-big { font-size: 2rem; font-weight: 900; color: var(--k-brand); font-variant-numeric: tabular-nums; }
+
+/* 기계 아래 장바구니 (카메라가 없을 때 눌러서 찍기) */
+.mart-tray {
+  background: #d9cdb4;
+  border-radius: 16px;
+  padding: 0.5rem 0.6rem 0.6rem;
+  border: 3px solid #a8946c;
+  color: #3d3220;
+}
+.mart-tray-title { font-weight: 900; font-size: 0.9rem; margin-bottom: 0.35rem; }
+.mart-tray-title span { font-weight: 700; font-size: 0.78rem; opacity: 0.8; margin-left: 0.3rem; }
+.mart-tray-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.mart-tray-grid button {
+  min-height: 4.2rem;
+  border-radius: 10px;
+  border: 2px solid #b9a77f;
+  background: #fbf8f1;
+  color: #2b2418;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--font-body);
+  padding: 0.2rem;
+}
+.mart-tray-grid button:active { transform: translateY(1px); border-color: #0f7a43; }
+
+/* 좁은 화면: 스캔 영역과 상품 줄을 더 촘촘하게 */
+.mart-row .k-qty button { width: 2.3rem; height: 2.3rem; }
+@container (max-width: 380px) {
+  .mart-scan { padding: 0.45rem 0.5rem; gap: 0.2rem; }
+  .mart-scan-say { font-size: 0.98rem; }
+  .mart-scan .scanner { grid-template-columns: 7rem minmax(0, 1fr); }
+  .mart-scan .scanner .sc-prompt { font-size: 0.78rem; }
+  .mart-scan-alt { font-size: 0.74rem; }
+  .mart-row { padding: 0.25rem 0.4rem; }
+}
+@container (min-width: 400px) {
+  .mart-row {
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    grid-template-areas: "pic name qty amt x";
+  }
+}

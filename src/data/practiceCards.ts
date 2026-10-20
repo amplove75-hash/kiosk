@@ -36,28 +36,29 @@ export const PRACTICE_CARDS: PracticeCard[] = [
   { code: "KX-RAIL-RSV-0001", kind: "rail", title: "나인레일 예매번호", sub: "서울 → 부산 · 예매 발권용", band: "#0b6bcb", format: "QR", trip: "서울 → 부산" },
 ];
 
-export type Product = { code: string; name: string; price: number; color: string; unit: string };
+export type Product = { id: string; code: string; name: string; price: number; color: string; unit: string };
 
 /** EAN-13 체크숫자 계산 */
 export function ean13(base12: string) {
   const sum = base12.split("").reduce((a, d, i) => a + Number(d) * (i % 2 ? 3 : 1), 0);
   return base12 + ((10 - (sum % 10)) % 10);
 }
-const P = (i: number, name: string, price: number, color: string, unit = "1개"): Product => ({
+const P = (i: number, id: string, name: string, price: number, color: string, unit = "1개"): Product => ({
+  id,
   code: ean13("20090000" + String(i).padStart(4, "0")),
   name, price, color, unit,
 });
 export const PRODUCTS: Product[] = [
-  P(1, "흰 우유", 2800, "#e8f1fb", "1L"),
-  P(2, "라면", 950, "#fde2c8", "1봉"),
-  P(3, "사과", 4500, "#fbd3d3", "3개"),
-  P(4, "두루마리 휴지", 8900, "#eef0f3", "12롤"),
-  P(5, "달걀", 6900, "#fff3d6", "10구"),
-  P(6, "두부", 1800, "#f6f4ec", "1모"),
-  P(7, "생수", 600, "#dcf0fb", "500ml"),
-  P(8, "식빵", 3200, "#f4e2c4", "1봉"),
-  P(9, "바나나", 3900, "#fff6bf", "1송이"),
-  P(10, "주방세제", 4200, "#dff5e6", "1통"),
-  P(11, "김", 3500, "#dfe7da", "5봉"),
-  P(12, "요구르트", 2400, "#f9e0ef", "5개"),
+  P(1, "milk", "흰 우유", 2800, "#e8f1fb", "1L"),
+  P(2, "ramen", "라면", 950, "#fde2c8", "1봉"),
+  P(3, "apple", "사과", 4500, "#fbd3d3", "3개"),
+  P(4, "tissue", "두루마리 휴지", 8900, "#eef0f3", "12롤"),
+  P(5, "egg", "달걀", 6900, "#fff3d6", "10구"),
+  P(6, "tofu", "두부", 1800, "#f6f4ec", "1모"),
+  P(7, "water", "생수", 600, "#dcf0fb", "500ml"),
+  P(8, "bread", "식빵", 3200, "#f4e2c4", "1봉"),
+  P(9, "banana", "바나나", 3900, "#fff6bf", "1송이"),
+  P(10, "detergent", "주방세제", 4200, "#dff5e6", "1통"),
+  P(11, "laver", "김", 3500, "#dfe7da", "5봉"),
+  P(12, "yogurt", "요구르트", 2400, "#f9e0ef", "5개"),
 ];

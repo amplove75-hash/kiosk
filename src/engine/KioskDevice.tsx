@@ -12,6 +12,8 @@ export function KioskDevice(props: {
   receiptOut: boolean;
   onCardSlot: () => void;
   onReceipt: () => void;
+  /** 기계 아래에 놓이는 물건 (예: 마트 장바구니) */
+  tray?: ReactNode;
 }) {
   const { card, receiptOut } = props;
   return (
@@ -59,6 +61,7 @@ export function KioskDevice(props: {
           {receiptOut && <span className="kd-call">영수증을 챙기세요</span>}
         </button>
       </div>
+      {props.tray}
     </div>
   );
 }

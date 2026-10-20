@@ -67,4 +67,32 @@ await withCam("KX-MEM-CAFE-0001", async (page) => {
   console.log("✓ 멤버십 카드 인식 → 스탬프 적립");
 });
 
+// 4) 마트: 상품 바코드를 카메라로 찍으면 목록에 담긴다 (같은 상품을 계속 비추면 1.5초마다 한 개씩)
+await withCam("PRODUCT-MILK", async (page) => {
+  await page.goto(BASE + "#/kiosk/mart");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  await page.click("[data-guide='start-btn']");
+  await page.waitForSelector(".mart-row:has-text('흰 우유')", { timeout: 15000 }).catch(() => fail("상품 바코드 인식 안 됨"));
+  await page.screenshot({ path: "tests/shots/12-cam-mart.png" });
+  console.log("✓ 마트 상품 바코드 인식 → 목록에 담김");
+});
+
+// 5) 마트 회원 적립 칸에 카페 멤버십을 비추면 거절
+await withCam("KX-MEM-CAFE-0001", async (page) => {
+  await page.goto(BASE + "#/kiosk/mart");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  await page.click("[data-guide='start-btn']"); await sleep(500);
+  await page.click("[data-guide='tray-milk']"); await sleep(500);
+  await page.click("[data-guide='btn-pay']"); await sleep(500);
+  await page.click("[data-guide='bag-none']"); await sleep(500);
+  await page.click("[data-guide='bag-next']"); await sleep(500);
+  await page.click("[data-guide='member-open']");
+  await page.waitForSelector(".sc-msg.bad", { timeout: 15000 }).catch(() => fail("카페 카드를 거절하지 않음"));
+  const m = await page.textContent(".sc-msg");
+  if (!m.includes("나인마트 회원카드가 아니에요")) fail("거절 문구 이상: " + m);
+  console.log("✓ 마트에서 카페 멤버십 카드 → 거절");
+});
+
 console.log(process.exitCode ? "카메라 테스트 실패" : "카메라 테스트 통과");

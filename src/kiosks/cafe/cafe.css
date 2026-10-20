@@ -1,5 +1,5 @@
-/* CAFE NINE 키오스크 화면 (교육자료의 빨간 카페 화면을 참고한 가상 브랜드). 실물 화면이므로 단일 테마. */
-.cafe {
+/* 키오스크 화면 공통 (.kx) + CAFE NINE 카페. 실물 화면이므로 단일 테마. */
+.kx {
   --k-brand: #d3261e;
   --k-brand-dark: #a51a13;
   --k-bg: #f4f3f1;
@@ -20,13 +20,13 @@
   font-size: 0.95rem;
   line-height: 1.45;
 }
-:root[data-contrast="high"] .cafe {
+:root[data-contrast="high"] .kx {
   --k-ink-soft: #000000;
   --k-line: #000000;
   --k-bg: #ffffff;
 }
-.cafe button { font-family: inherit; cursor: pointer; }
-.cafe button:disabled { cursor: not-allowed; }
+.kx button { font-family: inherit; cursor: pointer; }
+.kx button:disabled { cursor: not-allowed; }
 
 /* 공통 버튼 */
 .k-row { display: flex; gap: 0.6rem; }
@@ -409,5 +409,5 @@
 .k-pay button[aria-pressed="true"] { border-color: var(--k-brand); background: #fdeceb; }
 .k-or { width: 100%; display: flex; align-items: center; gap: 0.6rem; color: var(--k-ink-soft); font-size: 0.85rem; font-weight: 700; }
 .k-or::before, .k-or::after { content: ""; flex: 1; border-top: 1px dashed var(--k-line); }
-.cafe .scanner .sc-prompt { font-size: 0.95rem; }
-.cafe .scanner .sc-view { max-width: 15rem; }
+.kx .scanner .sc-prompt { font-size: 0.95rem; }
+.kx .scanner .sc-view { max-width: 15rem; }

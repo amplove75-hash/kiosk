@@ -4,6 +4,7 @@ import "./styles/global.css";
 import "./styles/kiosk.css";
 import "./kiosks/cafe/cafe.css";
 import "./scanner/scanner.css";
+import "./kiosks/mart/mart.css";
 import "./settings";
 import { App } from "./App";
 

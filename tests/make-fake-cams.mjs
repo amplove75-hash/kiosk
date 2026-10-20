@@ -18,6 +18,13 @@ for (const code of ["KX-CARD-0001", "KX-CARD-9999", "KX-MEM-CAFE-0001"]) {
   await p.locator(".modal .btn.primary").click();
   execFileSync("python3", ["tests/png2y4m.py", png, `${OUT}/${code}.y4m`]);
 }
+// 마트 상품 바코드 (EAN-13)
+await p.locator(".pprod", { hasText: "흰 우유" }).click();
+await p.waitForSelector(".big-code-box svg");
+await p.waitForTimeout(200);
+await p.locator(".big-code-box").screenshot({ path: `${OUT}/PRODUCT-MILK.png` });
+await p.locator(".modal .btn.primary").click();
+execFileSync("python3", ["tests/png2y4m.py", `${OUT}/PRODUCT-MILK.png`, `${OUT}/PRODUCT-MILK.y4m`]);
 await p.screenshot({ path: "tests/shots/6-print.png", fullPage: true });
 await b.close();
 console.log("fake cams ready");

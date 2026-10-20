@@ -1,4 +1,4 @@
-// E2E: 카페 키오스크 따라하기 완주 + 혼자 해보기(미션1: 아이스 아메리카노 1잔 샷추가) 완주
+// E2E: 카페·마트 키오스크 따라하기 완주 + 혼자 해보기 완주
 // 실행: npm run build && npx vite preview --port 4173 & node tests/e2e.mjs
 import { chromium } from "playwright";
 import fs from "node:fs";
@@ -13,20 +13,20 @@ const browser = await chromium.launch({
   executablePath: process.env.CHROME ?? "/opt/pw-browsers/chromium",
 });
 
-async function guideRun() {
+async function guideRun(id = "cafe") {
   const page = await browser.newPage({ viewport: { width: 1366, height: 900 } });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(BASE);
-  await page.screenshot({ path: `${SHOTS}/1-home.png`, fullPage: true });
-  await page.click("a[href='#/kiosk/cafe']");
+  if (id === "cafe") await page.screenshot({ path: `${SHOTS}/1-home.png`, fullPage: true });
+  await page.click(`a[href='#/kiosk/${id}']`);
   await page.waitForSelector(".kdevice");
 
   // 잘못된 곳을 누르면 막혀야 한다
   await sleep(300);
-  await page.click("[data-guide='order-takeout']", { force: true });
+  await page.click(id === "cafe" ? "[data-guide='order-takeout']" : "[data-guide='tray-apple']", { force: true });
   const toast = await page.textContent(".toast").catch(() => "");
-  if (!toast?.includes("다음")) fail("info 단계에서 터치가 막히지 않음: " + toast);
+  if (!toast?.includes("다음")) fail(`[${id}] info 단계에서 터치가 막히지 않음: ` + toast);
 
   for (let guard = 0; guard < 60; guard++) {
     if (await page.$(".panel.success")) break;
@@ -46,12 +46,12 @@ async function guideRun() {
       // 현재 단계의 대상 찾기: 말풍선과 같은 순서로 data-guide를 누른다
       const t = await page.getAttribute('.device-wrap', 'data-guide-step');
       await page.click(`.device-wrap [data-guide='${t}']`);
-      if (guard === 12) await page.screenshot({ path: `${SHOTS}/2-guide-mid.png` });
+      if (guard === 12) await page.screenshot({ path: `${SHOTS}/2-guide-mid-${id}.png` });
     }
     await sleep(550);
   }
-  if (!(await page.$(".panel.success"))) fail("따라하기 완주 실패");
-  await page.screenshot({ path: `${SHOTS}/3-guide-done.png` });
+  if (!(await page.$(".panel.success"))) fail(`[${id}] 따라하기 완주 실패`);
+  await page.screenshot({ path: `${SHOTS}/3-guide-done-${id}.png` });
   if (errors.length) fail("페이지 오류: " + errors.join(" | "));
   await page.close();
 }
@@ -98,7 +98,56 @@ async function practiceRun() {
   await page.close();
 }
 
-await guideRun();
+async function martPractice() {
+  const page = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  const errors = [];
+  page.on("pageerror", (e) => errors.push(e.message));
+  await page.goto(BASE + "#/kiosk/mart");
+  await page.waitForSelector(".kdevice");
+  await page.click("button:has-text('혼자 해보기')");
+  await sleep(400);
+  const tap = async (sel) => { await page.click(sel); await sleep(550); };
+  // 시작 전에 장바구니를 누르면 안내만 나온다
+  await tap("[data-guide='tray-milk']");
+  await tap("[data-guide='start-btn']");
+  if (!(await page.isDisabled("[data-guide='btn-pay']"))) fail("상품이 없는데 결제하기 활성");
+  await tap("[data-guide='tray-milk']");
+  await tap("[data-guide='tray-ramen']");
+  await tap("[data-guide='tray-apple']");
+  await tap("[data-guide='tray-ramen']");          // 같은 상품을 한 번 더 찍으면 수량 +1
+  await tap("[data-guide='qty-plus-milk']");       // 우유 2개
+  await page.click(".mart-row:has-text('사과') .k-x"); await sleep(550);   // 사과 빼기
+  await page.screenshot({ path: `${SHOTS}/10-mart-scan.png`, fullPage: true });
+  const list = await page.textContent(".mart-list");
+  if (list.includes("사과")) fail("사과가 빠지지 않음");
+  const total = await page.textContent(".mart-total");
+  if (!total.includes("4") || !total.includes("7,500원")) fail("합계 틀림: " + total);   // 우유 2×2,800 + 라면 2×950
+  await tap("[data-guide='btn-pay']");
+  if (!(await page.isDisabled("[data-guide='bag-next']"))) fail("봉투 미선택인데 다음 활성");
+  await tap("[data-guide='bag-paper']");
+  await tap("[data-guide='bag-next']");
+  await tap("[data-guide='member-open']");
+  await tap("[data-guide='scan-fallback']");
+  const note = await page.textContent(".k-note.ok");
+  if (!note.includes("1,250P") || !note.includes("1,325P")) fail("포인트 계산 틀림: " + note);  // 7,500 × 1% = 75P
+  await tap("[data-guide='member-next']");
+  await tap("[data-guide='pay-card']");
+  await tap("[data-guide='card-slot']");
+  await sleep(2800);
+  await tap("[data-guide='card-slot']");
+  await tap("[data-guide='receipt-slot']");
+  await tap("[data-guide='btn-receipt-ok']");
+  const r = await page.textContent(".receipt-paper");
+  if (!r.includes("나인마트") || !r.includes("종이봉투") || !r.includes("7,600원") || !r.includes("75P")) fail("마트 영수증 틀림: " + r);
+  if (!(await page.$(".panel.success"))) fail("마트 혼자 해보기 완주 실패");
+  await page.screenshot({ path: `${SHOTS}/11-mart-done.png`, fullPage: true });
+  if (errors.length) fail("페이지 오류: " + errors.join(" | "));
+  await page.close();
+}
+
+await guideRun("cafe");
 await practiceRun();
+await guideRun("mart");
+await martPractice();
 await browser.close();
 console.log(process.exitCode ? "E2E 실패" : "E2E 통과");
